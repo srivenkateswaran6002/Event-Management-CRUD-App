@@ -126,5 +126,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-
-CORS_ALLOW_ALL_ORIGINS = True
+#To allow frontend to access backend
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Next.js dev server url
+]
