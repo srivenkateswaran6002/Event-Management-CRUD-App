@@ -1,16 +1,11 @@
+import { fetchAllEvents } from "./api/api";
 import EventCard from "./components/EventCard"
 import NewEvent from "./components/NewEvent"
 
 export default async function Home() {
+  
   let events = [];
-
-  try {
-    const res = await fetch("http://localhost:8000/api/events/")
-    if (!res.ok) throw new Error("Failed to fetch events")
-    events = await res.json()
-  } catch (err) {
-    console.log(`Falied to fetch events from Backend : ${err}`)
-  }
+  events = await fetchAllEvents()
 
   // Sort the events only if list is not empty and by completed & upcoming order first
   if (events.length > 0) {
