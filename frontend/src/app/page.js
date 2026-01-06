@@ -15,18 +15,18 @@ export default async function Home() {
   // Sort the events only if list is not empty and by completed & upcoming order first
   if (events.length > 0) {
     events.sort((a, b) => {
-      const now = new Date();
+      const now = new Date()
 
-      const dateA = new Date(a.date);
-      const dateB = new Date(b.date);
+      const dateA = new Date(a.date)
+      const dateB = new Date(b.date)
 
-      const isCompletedA = dateA < now;
-      const isCompletedB = dateB < now;
+      const isCompletedA = dateA < now
+      const isCompletedB = dateB < now
 
-      if (isCompletedA && !isCompletedB) return 1;
-      if (!isCompletedA && isCompletedB) return -1;
+      if (isCompletedA && !isCompletedB) return 1
+      if (!isCompletedA && isCompletedB) return -1
 
-      return dateA - dateB;
+      return dateA - dateB
     });
   }
 
