@@ -1,4 +1,5 @@
 import { fetchEventById } from "@/app/api/api";
+import Link from "next/link";
 
 export default async function EventPage({ params }) {
   const { id } = await params;
@@ -53,6 +54,8 @@ export default async function EventPage({ params }) {
           <strong>Updated At:</strong> {event.updated_at}
         </p>
       </div>
+
+      <div className="bg-white text-black rounded-2xl p-3 content-center mx-auto w-fit mt-4"><Link href={"/"}><p>Back To Home</p></Link></div> 
       
     </div>
   )
