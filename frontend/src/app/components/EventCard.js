@@ -3,12 +3,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { deleteEvent } from "../api/api"
-
-function handleDelete(eventId) {
-  if (confirm("Are you sure you want to delete this event?")) {
-      deleteEvent(eventId)
-  }
-}
+import { useRouter } from "next/navigation"
 
 export default function EventCard({ event }) {
 
@@ -26,6 +21,20 @@ export default function EventCard({ event }) {
 
     const checkCompleted = status.includes("Completed")
 
+    const router = useRouter()
+
+    const handleDelete = async (eventId) => {
+      if (confirm("Are you sure you want to delete this event?")) {
+          try {
+            await deleteEvent(eventId)
+            router.refresh()
+          }
+          catch (err) {
+            console.error("Error deleting event:", err)
+            alert("Failed to delete event. Please try again after refresh.")
+          }
+      }
+    }
 
   return (
     <div className="relative">
