@@ -1,9 +1,14 @@
-import Image from "next/image";
+import Image from "next/image"
+import Link from "next/link"
 
 export default function NewEvent() {
     return (
-        <div className="bg-blue-400 flex content-center justify-center p-4 rounded shadow hover:shadow-lg hover:bg-blue-500 transition cursor-pointer hover:scale-105 duration-200" onClick={{}}>
-            <Image src="Plus.svg" alt="Add Event" width={150} height={150} />
+        <Link href="/events/new">
+
+        <div className="min-h-[230px] bg-blue-400 flex content-center justify-center p-4 rounded shadow hover:bg-blue-500 hover:scale-105 duration-200">
+            <Image src="Plus.svg" alt="Add Event" width={165} height={165} />
         </div>
+
+        </Link>
     )
 }

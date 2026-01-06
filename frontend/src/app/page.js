@@ -1,5 +1,5 @@
-import EventCard from "./components/EventCard";
-import NewEvent from "./components/NewEvent";
+import EventCard from "./components/EventCard"
+import NewEvent from "./components/NewEvent"
 
 export default async function Home() {
   let events = [];
