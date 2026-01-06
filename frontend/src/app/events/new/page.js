@@ -1,6 +1,7 @@
 "use client"
 
 import { createEvent } from "@/app/api/api"
+import Link from "next/link"
 
 export default function NewEvent() {
 
@@ -36,6 +37,9 @@ export default function NewEvent() {
                 <input type="date" name="date" className="w-full p-2 rounded" required />
                 <input type="time" name="time" className="w-full p-2 rounded" required />
                 <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Create Event</button>
+                <Link href={"/"}>
+                <div className="bg-white text-black rounded-2xl p-3 content-center mx-auto w-fit mt-4"><p>Back To Home</p></div>
+                </Link>
             </form>
         </div>
     )
