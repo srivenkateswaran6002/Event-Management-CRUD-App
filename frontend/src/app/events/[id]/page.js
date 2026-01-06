@@ -55,9 +55,11 @@ export default async function EventPage({ params }) {
         </p>
       </div>
 
+      
       <Link href={"/"}>
-      <div className="bg-white text-black rounded-2xl p-3 content-center mx-auto w-fit mt-4"><p>Back To Home</p></div>
+      <div className="bg-white text-black rounded p-3 content-center mx-auto mt-4 w-fit"><p>Back To Home</p></div>
       </Link>
+      
       
     </div>
   )
