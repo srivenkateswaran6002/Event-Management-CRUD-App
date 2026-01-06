@@ -1,6 +1,17 @@
+"use client"
+
 import Link from "next/link"
+import Image from "next/image"
+import { deleteEvent } from "../api/api"
+
+function handleDelete(eventId) {
+  if (confirm("Are you sure you want to delete this event?")) {
+      deleteEvent(eventId)
+  }
+}
 
 export default function EventCard({ event }) {
+
     const current_date = new Date()
     const event_date = new Date(event.date)
     let status = "Upcoming"
@@ -17,6 +28,18 @@ export default function EventCard({ event }) {
 
 
   return (
+    <div className="relative">
+      {/* Buttons */}
+      <div className="absolute top-3 right-3 flex gap-2 z-10">
+        <button onClick={(e) => {e.stopPropagation(); console.log("Edit:", event.id)}} className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-1 rounded">
+          <Image src="Edit.svg" alt="Edit" width={25} height={25} className="inline-block mr-1 content-center"/>
+        </button>
+        <button onClick={(e) => {e.stopPropagation(); console.log("Delete:", event.id); handleDelete(event.id)}} className="bg-red-600 hover:bg-red-700 text-white text-sm px-3 py-1 rounded">
+          <Image src="Delete.svg" alt="Delete" width={25} height={25} className="inline-block mr-1 content-center"/>
+        </button>
+      </div>
+
+      {/* Event Card */}
     <Link href={`/events/${event.id}`}>
 
     <div className="min-h-[230px] bg-zinc-700 p-4 rounded shadow hover:shadow-lg hover:bg-zinc-800 hover:scale-105 duration-200">
@@ -35,5 +58,6 @@ export default function EventCard({ event }) {
     </div>
     
     </Link>
+    </div>
   );
 }
