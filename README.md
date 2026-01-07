@@ -1,0 +1,183 @@
+# Event Management CRUD App
+
+This is a simple **Event Management System** built as a learning project. The goal of this project is to understand and demonstrate how a **Django REST Framework backend** can work together with a **Next.js frontend** to perform basic CRUD (Create, Read, Update, Delete) operations.
+
+The main focus was on getting the full stack working correctly from backend to frontend, rather than spending a lot of time on UI polish.
+
+---
+
+## Project Overview
+
+The application allows users to:
+
+* View all events
+* View details of a single event
+* Add a new event
+* Edit an existing event
+* Delete an event
+
+The backend provides REST APIs using Django REST Framework, and the frontend consumes these APIs using Fetch or Axios.
+
+---
+
+## Tech Stack Used
+
+### Backend
+
+* Python
+* Django
+* Django REST Framework (DRF)
+* PostgreSQL
+* django-cors-headers
+
+### Frontend
+
+* Next.js (React)
+* JavaScript
+* Tailwind CSS
+* Fetch API / Axios
+
+---
+
+## Folder Structure
+
+```
+Event-Management-CRUD-App
+│
+├── backend/          # Django backend
+│   ├── backend/     # Project settings
+│   ├── events/      # Events app (models, views, serializers)
+│   ├── requirements.txt
+│   └── manage.py
+│
+├── frontend/         # Next.js frontend
+│   ├── app/ / pages/
+│   ├── components/
+│   ├── styles/
+│   └── package.json
+│
+└── README.md
+```
+
+---
+
+## Requirements
+
+The following should be installed and available in PATH:
+
+* Python 3.x
+* Node.js and npm
+* PostgreSQL
+
+---
+
+## Backend Setup
+
+```bash
+cd backend
+```
+
+1. Create and activate a virtual environment
+
+```bash
+python -m venv venv
+source venv/bin/activate      # macOS / Linux
+venv\Scripts\activate         # Windows
+```
+
+2. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Create a PostgreSQL database
+
+* Create a database named `eventdb` (or any name of your choice)
+* Update the database name, username, and password in `backend/backend/settings.py`
+
+4. Run migrations
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+5. Start the backend server
+
+```bash
+python manage.py runserver
+```
+
+The backend will run at:
+
+```
+http://localhost:8000
+```
+
+---
+
+## Backend API Endpoints
+
+| Method | Endpoint         | Description        |
+| ------ | ---------------- | ------------------ |
+| GET    | /api/events/     | Get all events     |
+| GET    | /api/events/:id/ | Get single event   |
+| POST   | /api/events/     | Create a new event |
+| PUT    | /api/events/:id/ | Update an event    |
+| DELETE | /api/events/:id/ | Delete an event    |
+
+---
+
+## Frontend Setup
+
+```bash
+cd frontend
+```
+
+1. Install dependencies
+
+```bash
+npm install
+```
+
+2. Start development server
+
+```bash
+npm run dev
+```
+
+The frontend will run at:
+
+```
+http://localhost:3000
+```
+
+3. Production build (optional)
+
+```bash
+npm run build
+npm start
+```
+
+---
+
+## Frontend Features
+
+* Displays all events in a list or card format
+* Separate page to view event details
+* Form to add new events
+* Form to edit existing events
+* Ability to delete events
+* Basic loading and error handling
+* Responsive UI using Tailwind CSS
+
+---
+
+## Notes
+
+* CORS is enabled in the backend to allow requests from the frontend
+* UUID is used as the primary key for events
+* This project was tested and run locally
+
+---
