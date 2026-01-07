@@ -3,8 +3,25 @@ import Link from "next/link";
 
 export default async function EventPage({ params }) {
   const { id } = await params;
+  let event = null
 
-  const event = await fetchEventById(id);
+  try {
+    event = await fetchEventById(id)
+  }
+  catch (err) {
+    console.error("Error fetching event:", err);
+    event = null
+  }
+
+  if (!event){
+    return (
+      <div className="p-4 min-h-screen flex items-center justify-center">
+        <div className="bg-zinc-900 bg-center text-center text-3xl rounded-2xl w-xl p-6 mx-auto border-2">
+          <p className="text-red-400 text-center text-5xl ">Event Not Found</p>
+        </div>
+      </div>
+    )
+  }
 
   const current_date = new Date()
   const event_date = new Date(event.date)

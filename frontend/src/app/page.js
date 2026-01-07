@@ -42,11 +42,15 @@ export default async function Home({searchParams}) {
   }
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4 text-center">Events</h1>
+    <div className="p-4 bg-zinc-900 min-h-screen ">
+      {(events.length !== 0) &&<h1 className="text-4xl font-bold mb-4 text-center">Events</h1>}
       {
         (events.length === 0) ? (
-          <div className="content-center text-center align-middle"><p className="text-center text-4xl">No events available.</p></div>
+          <div className="p-4 min-h-screen flex items-center justify-center">
+            <div className="bg-zinc-900 bg-center text-center text-3xl rounded-2xl w-xl p-6 mx-auto border-2">
+              <p className="text-red-400 text-center text-5xl ">No Events Found. <br />Try Creating A Event!</p>
+            </div>
+          </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
             {events.map((event) => <EventCard key={event.id} event={event} />)}
