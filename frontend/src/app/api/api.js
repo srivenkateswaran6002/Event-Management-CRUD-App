@@ -51,3 +51,16 @@ export async function deleteEvent(id) {
         throw err
     }
 }
+
+export async function searchEvents(title) {
+    try {
+        const res = await axios.get(`${BASE_URL}/events/`, {
+            params: { title }
+        })
+        return res.data
+    }
+    catch (err) {
+        console.error(`Failed to search events with title ${title}:`, err)
+        throw err
+    }
+}

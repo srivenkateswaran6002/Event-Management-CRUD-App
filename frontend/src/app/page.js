@@ -1,13 +1,22 @@
-import { fetchAllEvents } from "./api/api";
+import { fetchAllEvents, searchEvents } from "./api/api"
 import EventCard from "./components/EventCard"
-import NewEvent from "./components/NewEvent"
+import NewEvent from "./components/NewEventCard"
+import BackToHomeCard from "./components/BackToHomeCard"
 
-export default async function Home() {
+export default async function Home({searchParams}) {
+
+  const {title} = await searchParams
+  console.log(title)
   
   let events = []
 
   try {
-    events = await fetchAllEvents()
+    if (title) {
+      events = await searchEvents(title)
+    }
+    else {
+      events = await fetchAllEvents()
+    }
   }
   catch (err) {
     console.error("Error fetching events in Home page:", err)
@@ -41,7 +50,8 @@ export default async function Home() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
             {events.map((event) => <EventCard key={event.id} event={event} />)}
-            <NewEvent />
+             {!title && <NewEvent />}
+             {title && <BackToHomeCard />}
           </div>
         )
       }
