@@ -212,6 +212,12 @@ python manage.py migrate
 
 If migrations run successfully, PostgreSQL setup is complete.
 
+### 7. Run the server
+
+```bash
+python manage.py runserver
+```
+
 ---
 
 The backend will usually run at:
