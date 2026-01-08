@@ -7,9 +7,9 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 
 class RegistrationView(CreateAPIView) :
+    permission_classes = [AllowAny]
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
-    permission_classes = [AllowAny]
 
 class LoginView(ObtainAuthToken) :
     permission_classes = [AllowAny]

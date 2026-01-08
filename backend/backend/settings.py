@@ -83,14 +83,13 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'your-db-name',
-        'USER': 'your-postgresql-db-name',
-        'PASSWORD': '-your-db-passowrd',
-        'HOST': 'localhost-or-other-host-name',
+        'NAME': 'eventsdb',
+        'USER': 'postgres',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -132,3 +131,12 @@ STATIC_URL = 'static/'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Next.js dev server url
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
