@@ -65,7 +65,7 @@ Event-Management-CRUD-App
 
 The following should be installed and available in PATH:
 
-* Python 3.x
+* Python >=3.12
 * Node.js and npm
 * PostgreSQL
 
@@ -91,31 +91,144 @@ venv\Scripts\activate         # Windows
 pip install -r requirements.txt
 ```
 
-3. Create a PostgreSQL database
+## PostgreSQL Database Setup
 
-* Create a database named `eventdb` (or any name of your choice)
-* Update the database name, username, and password in `backend/backend/settings.py`
+Follow these steps to create and configure the PostgreSQL database required for the backend.
 
-4. Run migrations
+---
+
+### 1. Start PostgreSQL Service
+
+Ensure PostgreSQL is installed, running, and available in your system PATH.
+
+**Windows**
+
+* Open **Services** or **pgAdmin** and make sure PostgreSQL is running
+
+**macOS (Homebrew)**
+
+```bash
+brew services start postgresql
+```
+
+**Linux**
+
+```bash
+sudo service postgresql start
+```
+
+---
+
+### 2. Login to PostgreSQL
+
+Open a terminal or command prompt and log in to PostgreSQL:
+
+```bash
+psql -U postgres
+```
+
+Enter the PostgreSQL password when prompted.
+
+> You may replace `postgres` with another PostgreSQL username if applicable.
+
+---
+
+### 3. Create Database
+
+Create a new database for the project:
+
+```sql
+CREATE DATABASE eventdb;
+```
+
+You may use a different database name if preferred.
+
+Verify that the database is created:
+
+```sql
+\l
+```
+
+---
+
+### 4. Create Database User (Recommended)
+
+Create a dedicated database user:
+
+```sql
+CREATE USER eventuser WITH PASSWORD 'eventpassword';
+```
+
+Grant required privileges:
+
+```sql
+ALTER ROLE eventuser SET client_encoding TO 'utf8';
+ALTER ROLE eventuser SET default_transaction_isolation TO 'read committed';
+ALTER ROLE eventuser SET timezone TO 'UTC';
+
+GRANT ALL PRIVILEGES ON DATABASE eventdb TO eventuser;
+```
+
+Exit the PostgreSQL shell:
+
+```sql
+\q
+```
+
+---
+
+### 5. Update Django Database Configuration
+
+Edit the following file:
+
+```
+backend/backend/settings.py
+```
+
+Replace the placeholder values in the `DATABASES` section with your actual PostgreSQL credentials:
+
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': '<your_database_name>',
+        'USER': '<your_database_user>',
+        'PASSWORD': '<your_database_password>',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+```
+
+---
+
+### 6. Verify Database Connection
+
+Run migrations to ensure the connection works:
 
 ```bash
 python manage.py makemigrations
 python manage.py migrate
 ```
 
-5. Start the backend server
+If migrations run successfully, PostgreSQL setup is complete.
 
-```bash
-python manage.py runserver
-```
+---
 
-The backend will run at:
+The backend will usually run at:
 
 ```
 http://localhost:8000
 ```
 
 ---
+
+### Notes
+
+* You may use the default `postgres` user instead of creating a new one
+* Ensure PostgreSQL is running before starting the Django server
+* For production environments, store credentials securely using environment variables
+
 
 ## Backend API Endpoints
 
