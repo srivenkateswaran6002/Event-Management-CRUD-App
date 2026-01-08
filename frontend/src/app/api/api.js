@@ -69,13 +69,14 @@ export async function searchEvents(title) {
 
 export function logout() {
     localStorage.removeItem('authToken')
+    localStorage.removeItem('authUserName')
 }
 
 export async function login(username , password){
     try {
         const res = await axios.post(`${BASE_URL}/auth/login/` , {username , password})
         localStorage.setItem('authToken' , res.data.token)
-        return [res.data.username , res.data.id]
+        localStorage.setItem('authUserName' , username)
     }
     catch (err) {
         console.error("Failed to login." , err)

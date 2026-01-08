@@ -1,16 +1,36 @@
+"use client"
+
 import { fetchEventById } from "@/app/api/api";
+import Loading from "@/app/components/Loading";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default async function EventPage({ params }) {
-  const { id } = await params;
-  let event = null
+export default function EventPage() {
+  const params = useParams();
+  const id = params["id"]
+  const [event , setEvent] = useState(null)
+  const [load , setLoad] = useState(false)
 
-  try {
-    event = await fetchEventById(id)
-  }
-  catch (err) {
-    console.error("Error fetching event:", err);
-    event = null
+  useEffect(() => {
+    const getEventDetails = async () => {
+      try {
+        setLoad(true)
+        setEvent(await fetchEventById(id))
+      }
+      catch (err) {
+        console.error("Error fetching event:", err);
+        setEvent(null)
+      }
+      finally {
+        setLoad(false)
+      }
+    }
+    getEventDetails()
+  } , [id])
+
+  if (load) {
+    return <Loading />
   }
 
   if (!event){

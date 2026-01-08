@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { logout } from "../api/api"
 
 export function NavBar() {
 
@@ -14,6 +15,12 @@ export function NavBar() {
         console.log("Searching for:", searchTerm)
         router.push(`/?title=${encodeURIComponent(searchTerm)}`)
         setSearchTerm("")
+    }
+
+    const handleLogout = async (e) => {
+        e.preventDefault()
+        logout()
+        router.push("/auth/")
     }
 
     return (
@@ -28,6 +35,7 @@ export function NavBar() {
         <Link href="/events/new" className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-center rounded px-4 py-2">
         Create New Event
         </Link>
+        <button className="rounded bg-red-400 py-2 p-4" onClick={(e) => handleLogout(e)}>Logout</button>
         </div>
     )
 }

@@ -1,31 +1,56 @@
+"use client"
+
 import { fetchAllEvents, searchEvents } from "./api/api"
 import EventCard from "./components/EventCard"
 import NewEvent from "./components/NewEventCard"
 import BackToHomeCard from "./components/BackToHomeCard"
+import { useRouter, useSearchParams } from "next/navigation"
+import {  useEffect, useState } from "react"
+import Loading from "./components/Loading"
 
-export default async function Home({searchParams}) {
+export default function Home() {
 
-  const {title} = await searchParams
-  console.log(title)
+  const sParams = useSearchParams()
+  const title = sParams.get("title")
+  const router = useRouter()
+  let sorted;
   
-  let events = []
+  const [events , setEvents] = useState([])
+  const [load , setLoad] = useState(false)
 
-  try {
-    if (title) {
-      events = await searchEvents(title)
+  useEffect(() => {
+    const getEvents = async () => {
+       try {
+        setLoad(true)
+        if (title) {
+          setEvents(await searchEvents(title))
+        }
+        else {
+          setEvents(await fetchAllEvents())
+        }
+      }
+      catch (err) {
+        if (err?.response?.status === 401 ){
+          router.push("/auth/")
+          return null
+        }
+        console.error("Error fetching events in Home page:", err)
+        setEvents([])
+      }
+      finally {
+        setLoad(false)
+      }
     }
-    else {
-      events = await fetchAllEvents()
-    }
-  }
-  catch (err) {
-    console.error("Error fetching events in Home page:", err)
-    events = []
+    getEvents()
+  } , [title])
+
+  if (load) {
+    return <Loading />
   }
 
   // Sort the events only if list is not empty and by completed & upcoming order first
   if (events.length > 0) {
-    events.sort((a, b) => {
+    sorted = [...events].sort((a, b) => {
       const now = new Date()
 
       const dateA = new Date(a.date)
@@ -53,7 +78,7 @@ export default async function Home({searchParams}) {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-            {events.map((event) => <EventCard key={event.id} event={event} />)}
+            {sorted.map((event) => <EventCard key={event.id} event={event} />)}
              {!title && <NewEvent />}
              {title && <BackToHomeCard />}
           </div>
