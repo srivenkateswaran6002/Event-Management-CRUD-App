@@ -96,8 +96,6 @@ pip install -r requirements.txt
 
 Follow these steps to create and configure the PostgreSQL database required for the backend.
 
----
-
 ### 1. Start PostgreSQL Service
 
 Ensure PostgreSQL is installed, running, and available in your system PATH.
