@@ -90,6 +90,7 @@ venv\Scripts\activate         # Windows
 ```bash
 pip install -r requirements.txt
 ```
+---
 
 ## PostgreSQL Database Setup
 
