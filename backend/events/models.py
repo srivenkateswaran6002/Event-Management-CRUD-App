@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.contrib.auth.models import User
 
 # Creating the event model
 class Event(models.Model):
@@ -11,7 +12,7 @@ class Event(models.Model):
     time = models.TimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    user = models.ForeignKey(User , on_delete=models.CASCADE , related_name='events')
     # String representation of the event
     def __str__(self):
         return self.title
