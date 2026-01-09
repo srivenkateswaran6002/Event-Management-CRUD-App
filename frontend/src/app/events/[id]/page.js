@@ -57,14 +57,12 @@ export default function EventPage() {
   const checkCompleted = status.includes("Completed")
 
   return (
-    <div className="bg-zinc-700 p-4 min-h-screen">
+    <div className="bg-zinc-900 text-center p-4 h-screen">
 
       <h2 className="text-5xl font-semibold text-white text-center">{event.title}</h2>
 
-      <br />
-
-      <div className="bg-zinc-900 bg-center text-center text-3xl rounded-2xl w-xl p-6 mx-auto">
-        <p className="text-zinc-400 mt-2">{event.description}</p>
+      <div className="bg-slate-800 text-left rounded-2xl w-xl p-6 mx-auto mt-4 space-y-3 text-3xl">
+        <p className="text-zinc-400 mt-2 text-center">{event.description}</p>
         <p className="mt-2">
           <strong>Venue:</strong> {event.venue}
         </p>
@@ -81,9 +79,7 @@ export default function EventPage() {
 
       <h2 className="text-5xl font-semibold text-white text-center">Additional Information</h2>
 
-      <br />
-
-      <div className="bg-zinc-900 bg-center text-center text-3xl rounded-2xl w-fit p-7 mx-auto">
+      <div className="bg-slate-800 text-left rounded-2xl w-fit p-6 mx-auto mt-4 space-y-3 text-3xl">
         <p className="mt-2">
           <strong>Created At:</strong> {event.created_at}
         </p>

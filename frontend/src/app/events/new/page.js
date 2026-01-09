@@ -28,6 +28,7 @@ export default function NewEvent() {
 
     return (
         <div className="bg-zinc-900 text-center p-4 h-screen">
+            
             <h2 className="text-white text-3xl">Create New Event</h2>
 
             <form className="bg-slate-800 rounded-2xl w-xl p-6 mx-auto mt-4 space-y-3" onSubmit={handleSubmit}>
@@ -38,7 +39,7 @@ export default function NewEvent() {
                 <input type="time" name="time" className="w-full p-2 rounded" required />
                 <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full">Create Event</button>
                 <Link href={"/"}>
-                <div className="bg-white text-black rounded p-3 content-center mx-auto w-fit mt-4 w-full"><p>Back To Home</p></div>
+                <div className="bg-white text-black rounded p-3 content-center mx-auto mt-4 w-full"><p>Back To Home</p></div>
                 </Link>
             </form>
         </div>
