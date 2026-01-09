@@ -303,5 +303,5 @@ npm start
 * Authentication uses Django’s built-in `User` model
 * A separate `accounts` app handles registration and login
 * Authorization is enforced using token authentication and user-based querysets
-* All previously unprotected event endpoints are now secured
+* All previously unprotected event endpoints are now secured.
 *Known Bug : The logout button may not appear unless the page is reloaded.
