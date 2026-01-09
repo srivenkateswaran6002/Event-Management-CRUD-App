@@ -1,6 +1,7 @@
 "use client"
 
 import { fetchEventById, updateEvent } from "@/app/api/api"
+import Loading from "@/app/components/Loading"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { use, useEffect, useState } from "react"
@@ -10,18 +11,27 @@ export default function EditEvent({params}) {
     const { id } = use(params)
     const router = useRouter()
     const [event , setEvent] = useState(null)
+    const [load , setLoad] = useState(false)
 
     useEffect(() => {
         const getEvent = async () => {
             try {
+                setLoad(true)
                 setEvent(await fetchEventById(id))
             } catch (err) {
                 console.error("Failed to fetch event:", err)
                 setEvent(null)
             }
+            finally{
+                setLoad(false)
+            }
         }
         getEvent()
     } , [])
+
+    if(load) {
+        return <Loading />
+    }
 
     if(!event) {
         return (
