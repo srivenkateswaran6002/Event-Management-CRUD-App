@@ -1,22 +1,26 @@
 # Event Management CRUD App
 
-This is a simple **Event Management System** built as a learning project. The goal of this project is to understand and demonstrate how a **Django REST Framework backend** can work together with a **Next.js frontend** to perform basic CRUD (Create, Read, Update, Delete) operations.
+An **Event Management System** built using a Django REST Framework backend and a Next.js frontend. The application supports full CRUD operations on events along with user authentication and authorization.
 
-The main focus was on getting the full stack working correctly from backend to frontend, rather than spending a lot of time on UI polish.
+The project focuses on clean architecture, correct backend–frontend integration, secure API design, and handling real-world concerns such as authentication, authorization, loading states, and error handling.
 
 ---
 
 ## Project Overview
 
-The application allows users to:
+The application allows authenticated users to:
 
-* View all events
+* Register and log in to the application
+* View all events created by them
 * View details of a single event
 * Add a new event
 * Edit an existing event
 * Delete an event
+* Search events by title
 
-The backend provides REST APIs using Django REST Framework, and the frontend consumes these APIs using Fetch or Axios.
+The backend exposes REST APIs using Django REST Framework, and the frontend consumes these APIs using Fetch or Axios.
+
+All event-related operations are protected and require user authentication.
 
 ---
 
@@ -29,13 +33,14 @@ The backend provides REST APIs using Django REST Framework, and the frontend con
 * Django REST Framework (DRF)
 * PostgreSQL
 * django-cors-headers
+* django.contrib.auth (default Django authentication system)
 
 ### Frontend
 
 * Next.js (React)
 * JavaScript
 * Tailwind CSS
-* Fetch API / Axios
+* Axios / Fetch API
 
 ---
 
@@ -47,6 +52,7 @@ Event-Management-CRUD-App
 ├── backend/          # Django backend
 │   ├── backend/     # Project settings
 │   ├── events/      # Events app (models, views, serializers)
+│   ├── accounts/    # Authentication app (register, login)
 │   ├── requirements.txt
 │   └── manage.py
 │
@@ -65,7 +71,7 @@ Event-Management-CRUD-App
 
 The following should be installed and available in PATH:
 
-* Python >=3.12
+* Python >= 3.12
 * Node.js and npm
 * PostgreSQL
 
@@ -77,7 +83,7 @@ The following should be installed and available in PATH:
 cd backend
 ```
 
-1. Create and activate a virtual environment
+### 1. Create and activate a virtual environment
 
 ```bash
 python -m venv venv
@@ -85,24 +91,23 @@ source venv/bin/activate      # macOS / Linux
 venv\Scripts\activate         # Windows
 ```
 
-2. Install dependencies
+### 2. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
+
 ---
 
 ## PostgreSQL Database Setup
 
-Follow these steps to create and configure the PostgreSQL database required for the backend.
-
 ### 1. Start PostgreSQL Service
 
-Ensure PostgreSQL is installed, running, and available in your system PATH.
+Ensure PostgreSQL is installed and running.
 
 **Windows**
 
-* Open **Services** or **pgAdmin** and make sure PostgreSQL is running
+* Start PostgreSQL via Services or pgAdmin
 
 **macOS (Homebrew)**
 
@@ -120,29 +125,19 @@ sudo service postgresql start
 
 ### 2. Login to PostgreSQL
 
-Open a terminal or command prompt and log in to PostgreSQL:
-
 ```bash
 psql -U postgres
 ```
-
-Enter the PostgreSQL password when prompted.
-
-> You may replace `postgres` with another PostgreSQL username if applicable.
 
 ---
 
 ### 3. Create Database
 
-Create a new database for the project:
-
 ```sql
 CREATE DATABASE eventdb;
 ```
 
-You may use a different database name if preferred.
-
-Verify that the database is created:
+Verify:
 
 ```sql
 \l
@@ -152,15 +147,9 @@ Verify that the database is created:
 
 ### 4. Create Database User (Recommended)
 
-Create a dedicated database user:
-
 ```sql
 CREATE USER eventuser WITH PASSWORD 'eventpassword';
-```
 
-Grant required privileges:
-
-```sql
 ALTER ROLE eventuser SET client_encoding TO 'utf8';
 ALTER ROLE eventuser SET default_transaction_isolation TO 'read committed';
 ALTER ROLE eventuser SET timezone TO 'UTC';
@@ -168,7 +157,7 @@ ALTER ROLE eventuser SET timezone TO 'UTC';
 GRANT ALL PRIVILEGES ON DATABASE eventdb TO eventuser;
 ```
 
-Exit the PostgreSQL shell:
+Exit:
 
 ```sql
 \q
@@ -178,13 +167,11 @@ Exit the PostgreSQL shell:
 
 ### 5. Update Django Database Configuration
 
-Edit the following file:
+Edit:
 
 ```
 backend/backend/settings.py
 ```
-
-Replace the placeholder values in the `DATABASES` section with your actual PostgreSQL credentials:
 
 ```python
 DATABASES = {
@@ -201,16 +188,12 @@ DATABASES = {
 
 ---
 
-### 6. Verify Database Connection
-
-Run migrations to ensure the connection works:
+### 6. Run migrations
 
 ```bash
 python manage.py makemigrations
 python manage.py migrate
 ```
-
-If migrations run successfully, PostgreSQL setup is complete.
 
 ### 7. Run the server
 
@@ -218,9 +201,7 @@ If migrations run successfully, PostgreSQL setup is complete.
 python manage.py runserver
 ```
 
----
-
-The backend will usually run at:
+Backend runs at:
 
 ```
 http://localhost:8000
@@ -228,14 +209,31 @@ http://localhost:8000
 
 ---
 
-### Notes
-
-* You may use the default `postgres` user instead of creating a new one
-* Ensure PostgreSQL is running before starting the Django server
-* For production environments, store credentials securely using environment variables
-
-
 ## Backend API Endpoints
+
+### Authentication Endpoints
+
+| Method | Endpoint            | Description              |
+| ------ | ------------------- | ------------------------ |
+| POST   | /api/auth/register/ | Register a new user      |
+| POST   | /api/auth/login/    | Login user and get token |
+
+**Register Response:**
+
+* id
+* username
+
+**Login Response:**
+
+* id
+* username
+* token
+
+---
+
+### Event Endpoints (Protected)
+
+All event-related endpoints require **Token Authentication**.
 
 | Method | Endpoint         | Description        |
 | ------ | ---------------- | ------------------ |
@@ -245,6 +243,8 @@ http://localhost:8000
 | PUT    | /api/events/:id/ | Update an event    |
 | DELETE | /api/events/:id/ | Delete an event    |
 
+Events are scoped per user using custom `get_queryset` logic to ensure users can only access their own events.
+
 ---
 
 ## Frontend Setup
@@ -253,25 +253,25 @@ http://localhost:8000
 cd frontend
 ```
 
-1. Install dependencies
+### 1. Install dependencies
 
 ```bash
 npm install
 ```
 
-2. Start development server
+### 2. Start development server
 
 ```bash
 npm run dev
 ```
 
-The frontend will run at:
+Frontend runs at:
 
 ```
 http://localhost:3000
 ```
 
-3. Production build (optional)
+### 3. Production build (optional)
 
 ```bash
 npm run build
@@ -282,20 +282,26 @@ npm start
 
 ## Frontend Features
 
-* Displays all events in a list or card format
+* User registration and login
+* Token-based authentication handling
+* Displays user-specific events in a card layout
 * Separate page to view event details
 * Form to add new events
 * Form to edit existing events
 * Ability to delete events
-* Basic loading and error handling
+* Search events by title
+* Loading indicators for API delays
+* Basic error handling for failed requests
 * Responsive UI using Tailwind CSS
 
 ---
 
 ## Notes
 
-* CORS is enabled in the backend to allow requests from the frontend
+* CORS is enabled in the backend to allow frontend access
 * UUID is used as the primary key for events
-* This project was tested and run locally
-
----
+* Authentication uses Django’s built-in `User` model
+* A separate `accounts` app handles registration and login
+* Authorization is enforced using token authentication and user-based querysets
+* All previously unprotected event endpoints are now secured
+*Known Bug : The logout button may not appear unless the page is reloaded.
